@@ -23,7 +23,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-//ingredients
+        //ingredients
         $ingredients = [];
         for ($i = 1; $i <= 50; $i++) {
             $ingredient = new Ingredient();
@@ -33,7 +33,7 @@ class AppFixtures extends Fixture
             $ingredients[] = $ingredient;
             $manager->persist($ingredient);
         }
-//Recipes
+        //Recipes
         for ($j = 0; $j < 25; $j++) {
             $recipe = new Recipe();
             $recipe->setName($this->faker->word())
@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
                 ->setPrice(mt_rand(0, 1) == 1 ? mt_rand(1, 1000) : null)
                 ->setIsFavorite(mt_rand(0, 1) == 1);
 
-            for ($k = 0; $k < mt_rand(1, 15); $k++) {
+            for ($k = 0; $k < mt_rand(5, 15); $k++) {
                 $recipe->addIngredient($ingredients[mt_rand(0, count($ingredients) - 1)]);
             }
             $manager->persist($recipe);

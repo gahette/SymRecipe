@@ -55,11 +55,11 @@ class Recipe
 
     #[ORM\Column]
     #[Assert\NotNull]
-    private DateTimeImmutable $createAt;
+    private DateTimeImmutable $createdAt;
 
     #[ORM\Column]
     #[Assert\NotNull]
-    private DateTimeImmutable $updateAt;
+    private DateTimeImmutable $updatedAt;
 
     #[ORM\ManyToMany(targetEntity: Ingredient::class)]
     private Collection $ingredients;
@@ -67,15 +67,14 @@ class Recipe
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
-        $this->createAt = new DateTimeImmutable();
-        $this->updateAt = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     #[ORM\PrePersist]
-    public function setUpdateAtValue()
+    public function setUpdatedAtValue()
     {
-
-        $this->updateAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public
@@ -183,29 +182,29 @@ class Recipe
     }
 
     public
-    function getCreateAt(): ?DateTimeImmutable
+    function getCreatedAt(): ?DateTimeImmutable
     {
-        return $this->createAt;
+        return $this->createdAt;
     }
 
     public
-    function setCreateAt(DateTimeImmutable $createAt): self
+    function setCreatedAt(DateTimeImmutable $createdAt): self
     {
-        $this->createAt = $createAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public
-    function getUpdateAt(): ?DateTimeImmutable
+    function getUpdatedAt(): ?DateTimeImmutable
     {
-        return $this->updateAt;
+        return $this->updatedAt;
     }
 
     public
-    function setUpdateAt(DateTimeImmutable $updateAt): self
+    function setUpdatedAt(DateTimeImmutable $updatedAt): self
     {
-        $this->updateAt = $updateAt;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -236,4 +235,6 @@ class Recipe
 
         return $this;
     }
+
+
 }
