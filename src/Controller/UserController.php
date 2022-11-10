@@ -7,6 +7,7 @@ use App\Form\UserPasswordType;
 use App\Form\UserType;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,30 +19,32 @@ class UserController extends AbstractController
     /**
      * This controller allows us to edit user's profile
      *
-     * @param User $user
+     * @param User $choosenUser
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @param UserPasswordHasherInterface $hasher
      * @return Response
      */
+    #[Security("is_granted('ROLE_USER') and user === choosenUser")]
     #[Route('/utilisateur/edition/{id}', name: 'user.edit', methods: ['GET', 'POST'])]
-    public function edit(User $user, Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
+    public function edit(User $choosenUser, Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('security.login');
-        }
+//        Code avant mise en place du #[Security]
+//        if (!$this->getUser()) {
+//            return $this->redirectToRoute('security.login');
+//        }
+//
+//        if ($this->getUser() !== $user) {
+//            return $this->redirectToRoute('recipe.index');
+//        }
 
-        if ($this->getUser() !== $user) {
-            return $this->redirectToRoute('recipe.index');
-        }
-
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $choosenUser);
 
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($hasher->isPasswordValid($user, $form->getData()->getPlainPassword())) {
+            if ($hasher->isPasswordValid($choosenUser, $form->getData()->getPlainPassword())) {
 
                 $user = $form->getData();
                 $manager->persist($user);
@@ -68,35 +71,37 @@ class UserController extends AbstractController
     /**
      * This controller allows us to edit user's password
      *
-     * @param User $user
+     * @param User $choosenUser
      * @param Request $request
      * @param UserPasswordHasherInterface $hasher
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[Security("is_granted('ROLE_USER') and user === choosenUser")]
     #[Route('/utilisateur/edition-mot-de-passe/{id}', 'user.edit.password', methods: ['GET', 'POST'])]
-    public function editPassword(User $user, Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager): Response
+    public function editPassword(User $choosenUser, Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager): Response
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('security.login');
-        }
-
-        if ($this->getUser() !== $user) {
-            return $this->redirectToRoute('recipe.index');
-        }
+//        Code avant mise en place du #[Security]
+//        if (!$this->getUser()) {
+//            return $this->redirectToRoute('security.login');
+//        }
+//
+//        if ($this->getUser() !== $user) {
+//            return $this->redirectToRoute('recipe.index');
+//        }
 
         $form = $this->createForm(UserPasswordType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($hasher->isPasswordValid($user, $form->getData()['plainPassword'])
+            if ($hasher->isPasswordValid($choosenUser, $form->getData()['plainPassword'])
             ) {
-                $user->setUpdatedAt(new DateTimeImmutable());
+                $choosenUser->setUpdatedAt(new DateTimeImmutable());
 
-                $user->setPlainPassword(
+                $choosenUser->setPlainPassword(
                     $form->getData()['newPassword']
                 );
-                $manager->persist($user);
+                $manager->persist($choosenUser);
                 $manager->flush();
 
                 $this->addFlash(
