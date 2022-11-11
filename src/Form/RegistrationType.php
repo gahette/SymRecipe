@@ -22,8 +22,8 @@ class RegistrationType extends AbstractType
             ->add('fullName', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '50',
+                    'minlength' => '2',
+                    'maxlength' => '50',
                 ],
                 'label' => 'Nom / Prénom',
                 'label_attr' => [
@@ -37,8 +37,8 @@ class RegistrationType extends AbstractType
             ->add('pseudo', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '50',
+                    'minlength' => '2',
+                    'maxlength' => '50',
                 ],
                 'required'=>false,
                 'label' => 'Pseudo Facultatif',
@@ -52,8 +52,8 @@ class RegistrationType extends AbstractType
             ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '180',
+                    'minlength' => '2',
+                    'maxlength' => '180',
                 ],
                 'label' => 'Adresse email',
                 'label_attr' => [
