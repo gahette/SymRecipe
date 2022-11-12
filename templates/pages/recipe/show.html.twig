@@ -14,6 +14,10 @@
 
         <h1 class="mt-4">{{ recipe.name }}</h1>
 
+        <div class="recipe_image">
+            <img  style="max-width: 500px; " src="{{ vich_uploader_asset(recipe, 'imageFile') }}" alt="image poulet roti">
+        </div>
+
         <p>La moyenne de cette recette est de {{ recipe.average|number_format(2, '.', ',') }} / 5 </p>
         <div>
             <span class="badge bg-primary">Créée le  {{ recipe.createdAt | date('d/m/Y') }}</span>
